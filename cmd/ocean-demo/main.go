@@ -3,8 +3,11 @@ package main
 
 import (
 	"github.com/go-gl/gl/v3.3-core/gl"
+	"github.com/go-gl/glfw/v3.3/glfw"
 	"log"
 	"runtime"
+
+	"example.com/ocean/internal"
 )
 
 func init() {
@@ -32,12 +35,12 @@ func main() {
 		log.Fatalln("failed to initialize gl:", err)
 	}
 
-	InitRenderer()
+	internal.InitRenderer()
 	for !window.ShouldClose() {
-		Update()
-		Render()
+		internal.Update()
+		internal.Render()
 		window.SwapBuffers()
 		glfw.PollEvents()
 	}
-	Cleanup()
+	internal.Cleanup()
 }
