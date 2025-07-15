@@ -1,0 +1,14 @@
+# syntax=docker/dockerfile:1
+
+# Build stage using xgo for Mac cross compilation
+FROM crazymax/xgo:latest AS builder
+
+WORKDIR /src
+COPY . .
+# Build the binary for macOS; ARCH can be overridden at build time
+ARG ARCH=amd64
+RUN xgo --targets=darwin/${ARCH} -out ocean-demo ./cmd/ocean-demo \
+    && mv ocean-demo-darwin*-${ARCH} /ocean-demo
+
+FROM scratch AS export
+COPY --from=builder /ocean-demo /ocean-demo
