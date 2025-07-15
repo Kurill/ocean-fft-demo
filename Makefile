@@ -1,20 +1,17 @@
-IMAGE ?= ocean-demo-mac
+BUILDER_IMAGE ?= ocean-demo-builder
 ARCH ?= amd64
-CONTAINER ?= ocean-demo-build
+
+container:
+	docker build -f Dockerfile.build -t $(BUILDER_IMAGE) .
 
 build:
-	@if ! docker image inspect $(IMAGE) > /dev/null 2>&1; then \
-	docker build --build-arg ARCH=$(ARCH) -f Dockerfile.mac -t $(IMAGE) .; \
-	else \
-	echo "$(IMAGE) image already exists"; \
-	fi
+	docker run --rm -v $(PWD):/src $(BUILDER_IMAGE) \
+		bash -c "xgo --targets=darwin/${ARCH} --pkg cmd/ocean-demo -out ocean-demo . && mv /build/ocean-demo-darwin-${ARCH} /src/ocean-demo"
 
-extract: build
-	docker create --name $(CONTAINER) $(IMAGE)
-	docker cp $(CONTAINER):/ocean-demo ./ocean-demo
-	docker rm $(CONTAINER)
-
-run: extract
+run: build
 	./ocean-demo
 
-.PHONY: build extract run
+clean:
+	rm -f ocean-demo
+
+.PHONY: container build run clean
