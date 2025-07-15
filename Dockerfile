@@ -3,6 +3,13 @@ FROM golang:1.20 AS builder
 WORKDIR /app
 COPY . .
 
+# Install build dependencies for OpenGL bindings
+RUN apt-get update && \
+    apt-get install -y pkg-config libgl1-mesa-dev libx11-dev \
+                       libxi-dev libxcursor-dev libxrandr-dev \
+                       libxinerama-dev libxxf86vm-dev && \
+    rm -rf /var/lib/apt/lists/*
+
 # Initialize module if needed
 RUN test -f go.mod || go mod init example.com/ocean
 RUN go mod tidy
