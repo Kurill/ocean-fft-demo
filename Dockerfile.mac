@@ -8,7 +8,7 @@ COPY . .
 # Build the binary for macOS; ARCH can be overridden at build time
 ARG ARCH=amd64
 RUN xgo --targets=darwin/${ARCH} --pkg cmd/ocean-demo -out ocean-demo . \
-    && mv ocean-demo-darwin*-${ARCH} /ocean-demo
+    && mv /build/ocean-demo-darwin-${ARCH} /ocean-demo
 
 FROM scratch AS export
 COPY --from=builder /ocean-demo /ocean-demo
