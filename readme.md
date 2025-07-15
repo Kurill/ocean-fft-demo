@@ -99,3 +99,16 @@ docker build -t ocean-demo .
 docker run --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix ocean-demo
 ```
 
+### macOS
+
+На macOS требуется XQuartz для работы X11. Запустите его и разрешите
+подключения по сети (`Preferences` → `Security` → `Allow connections from
+network clients`). Затем выполните:
+
+```bash
+xhost + 127.0.0.1
+docker run --rm -e DISPLAY=host.docker.internal:0 ocean-demo
+```
+
+Это значение `DISPLAY` указывает контейнеру на X-сервер, запущенный XQuartz.
+
