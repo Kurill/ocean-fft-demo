@@ -1,5 +1,9 @@
 # Build stage
-FROM golang:1.20 AS builder
+# Use the same Debian release for build and runtime stages to avoid
+# glibc version mismatches between the compiled binary and the base
+# system. Bookworm ships with glibc >= 2.36 which matches the
+# libraries used by the Go builder image.
+FROM golang:1.20-bookworm AS builder
 WORKDIR /app
 COPY . .
 
@@ -16,7 +20,7 @@ RUN go mod tidy
 RUN CGO_ENABLED=1 go build -o ocean ./cmd/ocean-demo
 
 # Run stage
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 RUN apt-get update && \
     apt-get install -y libgl1-mesa-glx libx11-dev libxi6 \
                        libxcursor1 libxrandr2 libxinerama1 libxxf86vm1 && \
