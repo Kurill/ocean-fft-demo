@@ -105,8 +105,9 @@ docker run --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix ocean-demo
 `Makefile`, который собирает нативный бинарник внутри Docker.
 
 ```bash
-make build   # создаёт образ и собирает ./ocean-demo
-make run     # извлекает бинарник и запускает его
+make container  # собирает образ с окружением xgo (достаточно один раз)
+make build      # компилирует ./ocean-demo внутри контейнера
+make run        # запускает собранный бинарник
 ```
 
 Если всё же требуется запуск в контейнере, необходим XQuartz. После его старта
