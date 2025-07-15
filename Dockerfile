@@ -6,7 +6,7 @@ COPY . .
 # Initialize module if needed
 RUN test -f go.mod || go mod init example.com/ocean
 RUN go mod tidy
-RUN CGO_ENABLED=1 go build -o ocean ocean_fft_glsl_go.go
+RUN CGO_ENABLED=1 go build -o ocean ./cmd/ocean-demo
 
 # Run stage
 FROM debian:bullseye-slim
