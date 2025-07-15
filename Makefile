@@ -3,9 +3,13 @@ ARCH ?= amd64
 CONTAINER ?= ocean-demo-build
 
 build:
-	docker build --build-arg ARCH=$(ARCH) -f Dockerfile.mac -t $(IMAGE) .
+	@if ! docker image inspect $(IMAGE) > /dev/null 2>&1; then \
+	docker build --build-arg ARCH=$(ARCH) -f Dockerfile.mac -t $(IMAGE) .; \
+	else \
+	echo "$(IMAGE) image already exists"; \
+	fi
 
-extract:
+extract: build
 	docker create --name $(CONTAINER) $(IMAGE)
 	docker cp $(CONTAINER):/ocean-demo ./ocean-demo
 	docker rm $(CONTAINER)
