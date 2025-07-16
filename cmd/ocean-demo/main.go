@@ -23,6 +23,8 @@ func main() {
 	glfw.WindowHint(glfw.ContextVersionMajor, 3)
 	glfw.WindowHint(glfw.ContextVersionMinor, 3)
 	glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
+	// macOS requires forward-compatible contexts for OpenGL 3.2+
+	glfw.WindowHint(glfw.OpenGLForwardCompatible, glfw.True)
 	glfw.WindowHint(glfw.Resizable, glfw.True)
 
 	window, err := glfw.CreateWindow(1280, 720, "Ocean FFT Demo", nil, nil)
